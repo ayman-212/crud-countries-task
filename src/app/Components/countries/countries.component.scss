@@ -1,0 +1,39 @@
+.container {
+  padding: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: hsl(0, 0%, 98%);
+
+  .countries-container {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .search-form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: hsl(200, 15%, 8%);
+
+    input {
+      padding: 15px;
+      font-size: 14px;
+      border: none;
+      flex: 0.4;
+      background-color: hsl(0, 0%, 100%);
+      outline: none;
+      margin-left: 10px;
+    }
+  
+  }
+}
+

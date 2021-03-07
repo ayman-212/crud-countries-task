@@ -1,0 +1,30 @@
+<div class="signin-container">
+  <form (submit)="($event.preventDefault)">
+    <div class="input-field">
+      <label for="userEmail">E-mail:</label>
+      <input
+        required
+        ngModel
+        name="email"
+        #email="ngModel"
+        (change)="validateEmail($event.target.value, email)"
+        type="email"
+        placeholder="Enter your e-mail"
+        id="userEmail"
+      />
+      <div class="alert" *ngIf="!email.valid && email.touched">
+        <div *ngIf="email.errors.required">E-mail is required</div>
+        <div *ngIf="email.errors.pattern">E-mail is not valid</div>
+      </div>
+    </div>
+    <div class="input-field">
+      <label for="userPassword">Password:</label>
+      <input
+        type="password"
+        placeholder="Enter your password"
+        id="userPassword"
+      />
+    </div>
+    <button><a routerLink="/countries">Sign In</a></button>
+  </form>
+</div>

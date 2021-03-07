@@ -1,0 +1,16 @@
+.app-layout-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: hsl(0, 0%, 100%);
+    padding: 20px 5%;
+    span {
+      font-size: 14px;
+      margin-left: 5px;
+    }
+    h2 {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+  }
+  
