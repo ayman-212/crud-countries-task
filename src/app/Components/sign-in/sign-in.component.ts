@@ -32,8 +32,4 @@ export class SignInComponent implements OnInit {
     console.log('Email', form.value.email);
     console.log('Password', form.value.password);
   }
-
-  log(x) {
-    console.log(x);
-  }
 }
