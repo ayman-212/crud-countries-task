@@ -1,30 +1,55 @@
 <div class="signin-container">
-  <form (submit)="($event.preventDefault)">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
     <div class="input-field">
-      <label for="userEmail">E-mail:</label>
+      <label>E-mail:</label>
       <input
-        required
-        ngModel
-        name="email"
-        #email="ngModel"
-        (change)="validateEmail($event.target.value, email)"
-        type="email"
-        placeholder="Enter your e-mail"
-        id="userEmail"
+        type="text"
+        formControlName="email"
+        placeholder="Enter your email"
       />
-      <div class="alert" *ngIf="!email.valid && email.touched">
-        <div *ngIf="email.errors.required">E-mail is required</div>
-        <div *ngIf="email.errors.pattern">E-mail is not valid</div>
+      <div
+        *ngIf="
+          myForm.controls.email.hasError('required') &&
+          myForm.controls.email.touched
+        "
+        class="alert"
+      >
+        *Oops, Email is required
+      </div>
+      <div *ngIf="myForm.controls.email.hasError('pattern')" class="alert">
+        *Oops,Your Email is not correct
       </div>
     </div>
     <div class="input-field">
-      <label for="userPassword">Password:</label>
+      <label>Password:</label>
       <input
         type="password"
-        placeholder="Enter your password"
-        id="userPassword"
+        formControlName="password"
+        placeholder="Your Password"
       />
+      <div
+        *ngIf="
+          myForm.controls.password.hasError('required') &&
+          myForm.controls.password.touched
+        "
+        class="alert"
+      >
+        *Oops, Your password is required
+      </div>
+      <div *ngIf="myForm.controls.password.hasError('minlength')" class="alert">
+        *Oops, your password is too short
+      </div>
+      <div *ngIf="myForm.controls.password.hasError('pattern')" class="alert">
+        *Oops, Your password has to include at least one uppercase, one
+        lowercase, one character, and numerical
+      </div>
     </div>
-    <button><a routerLink="/countries">Sign In</a></button>
+    <button
+      type="submit"
+      [disabled]="myForm.invalid"
+      [ngClass]="{ 'not-available': myForm.invalid }"
+    >
+      Sign In
+    </button>
   </form>
 </div>
