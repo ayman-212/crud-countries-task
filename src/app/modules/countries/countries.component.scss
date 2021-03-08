@@ -28,12 +28,40 @@
       padding: 15px;
       font-size: 14px;
       border: none;
-      flex: 0.4;
       background-color: hsl(0, 0%, 100%);
       outline: none;
       margin-left: 10px;
+      width: 100%;
     }
-  
   }
 }
 
+.error-message {
+  height: 69vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    font-size: 18px;
+    color: indianred;
+  }
+}
+
+.widget-container {
+  width: 30%;
+}
+
+.widget {
+  background-color: white;
+  margin-left: 10px;
+  width: 100%;
+  height: auto;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 15px;
+  padding: 2%;
+  p{
+    padding: 2% 0;
+    border-bottom: 1.5px solid hsl(0,0,95%);
+  }
+}

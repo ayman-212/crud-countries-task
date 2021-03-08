@@ -1,0 +1,42 @@
+<div class="container">
+  <form
+    class="search-form"
+    (submit)="$event.preventDefault()"
+    [formGroup]="searchForm"
+  >
+    <div class="widget-container">
+      <input
+        type="text"
+        placeholder="search for a country..."
+        value=""
+        #countryValue
+        formControlName="searchForCountryByName"
+      />
+      <div *ngIf="countryValue" class="widget">
+        <p *ngFor="let country of selectedCountries">{{ country.name }}</p>
+      </div>
+    </div>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Filter By Region</mat-label>
+      <mat-select value="" (selectionChange)="selectRegion($event.value)">
+        <mat-option value="africa">Africa</mat-option>
+        <mat-option value="americas">America</mat-option>
+        <mat-option value="asia">Asia</mat-option>
+        <mat-option value="europe">Europe</mat-option>
+        <mat-option value="oceania">Oceania</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <div class="error-message" *ngIf="showWError; else countriesCard">
+    <p>{{ errorMessage }}</p>
+  </div>
+  <ng-template #countriesCard>
+    <ul class="countries-container">
+      <app-country
+        *ngFor="let country of countries"
+        [countryDetails]="country"
+      ></app-country>
+    </ul>
+  </ng-template>
+</div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Country } from 'src/app/models/Country';
-import { CountriesService } from 'src/app/services/countries.service';
+import { Country } from '../../modules/countries/Country';
+import { CountriesService } from '../../modules/countries/countries.service';
 
 @Component({
   selector: 'app-info',
