@@ -49,19 +49,24 @@
 
 .widget-container {
   width: 30%;
+  position: relative;
 }
 
 .widget {
-  background-color: white;
-  margin-left: 10px;
+  background-color: hsla(0, 0, 100%, 0.8);
   width: 100%;
   height: auto;
-  max-height: 150px;
+  max-height: 180px;
   overflow-y: auto;
-  margin-top: 15px;
   padding: 2%;
-  p{
+  position: absolute;
+  top: 100%;
+  left: 4%;
+  margin-top: 15px;
+
+  p {
     padding: 2% 0;
-    border-bottom: 1.5px solid hsl(0,0,95%);
+    border-bottom: 1.5px solid hsl(0, 0, 95%);
   }
 }
+

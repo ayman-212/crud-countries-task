@@ -18,11 +18,9 @@ export class InfoComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe((response) => {
       let countryName = response.get('countryName');
-      this.countryService
-        .getCountryByName(countryName)
-        .subscribe((params) => {
-          this.countryInfo = params;
-        });
+      this.countryService.getCountryByName(countryName).subscribe((params) => {
+        this.countryInfo = params;
+      });
     });
   }
 }

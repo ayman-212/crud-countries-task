@@ -9,10 +9,11 @@
         type="text"
         placeholder="search for a country..."
         value=""
-        #countryValue
+        #search
         formControlName="searchForCountryByName"
       />
-      <div *ngIf="countryValue" class="widget">
+
+      <div *ngIf="search.value && !showWError" class="widget">
         <p *ngFor="let country of selectedCountries">{{ country.name }}</p>
       </div>
     </div>
@@ -29,7 +30,7 @@
     </mat-form-field>
   </form>
   <div class="error-message" *ngIf="showWError; else countriesCard">
-    <p>{{ errorMessage }}</p>
+    <p>Something bad happened, please try Search For a Valid Country.</p>
   </div>
   <ng-template #countriesCard>
     <ul class="countries-container">

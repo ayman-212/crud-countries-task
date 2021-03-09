@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Country } from './Country';
@@ -33,11 +33,16 @@ export class CountriesService {
     return this.http.get<Country[]>(`${this.countriesUrl}/all`);
   }
 
-  getCountryByName(countryName: string): Observable<Country[]> {
+  getCountryByName(
+    countryName: string,
+  ): Observable<Country[]> {
     return this.http
       .get<Country[]>(`${this.countriesUrl}/name/${countryName}`)
-      .pipe(catchError(this.handleError))
-      ;
+      .pipe(
+        catchError((err) => {
+          return of(null);
+        })
+      );
   }
 
   getCountryByRegion(regionName: string): Observable<Country[]> {

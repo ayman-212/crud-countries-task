@@ -34,26 +34,30 @@ export class CountriesComponent implements OnInit {
   searchForCountry() {
     this.searchForCountryByName.valueChanges
       .pipe(
-        debounceTime(1000),
+        debounceTime(500),
         switchMap((id) => {
           console.log(id);
-          if (id === '') {
+          if (id == '') {
             return this.countriesService.getCountries();
           } else {
             return this.countriesService.getCountryByName(id);
           }
         })
       )
-      .subscribe(
-        (response) => {
+      .subscribe((response) => {
+        if (response === null) {
+          this.showWError = true;
+        } else {
           this.selectedCountries = response;
           this.countries = response;
-        },
-        (error) => {
-          this.showWError = true;
-          this.errorMessage = error;
+          this.showWError=false;
         }
-      );
+        console.log(this.showWError);
+      });
+
+    /* the issue is when it goes to the error in subscribe it never goes to the 
+      function again
+    */
     /* if (name == '') {
       this.countriesService.getCountries().subscribe((response) => {
         this.countries = response;
