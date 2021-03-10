@@ -7,9 +7,10 @@ import { AppRoutingModule } from '../../app-routing.module';
 
 import { CountriesComponent } from './countries.component';
 import { CountryComponent } from '../../Components/country/country.component';
+import { SpinnerComponent } from '../../Components/spinner/spinner.component';
 
 @NgModule({
-  declarations: [CountriesComponent, CountryComponent],
+  declarations: [CountriesComponent, CountryComponent, SpinnerComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -17,5 +18,7 @@ import { CountryComponent } from '../../Components/country/country.component';
     MaterialModule,
     AppRoutingModule,
   ],
+  
+ 
 })
 export class CountriesModule {}

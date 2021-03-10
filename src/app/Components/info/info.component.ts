@@ -10,6 +10,7 @@ import { CountriesService } from '../../modules/countries/countries.service';
 })
 export class InfoComponent implements OnInit {
   countryInfo: Country[];
+  showSpinner: boolean;
   constructor(
     private route: ActivatedRoute,
     private countryService: CountriesService
@@ -18,9 +19,18 @@ export class InfoComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe((response) => {
       let countryName = response.get('countryName');
-      this.countryService.getCountryByName(countryName).subscribe((params) => {
-        this.countryInfo = params;
-      });
+      this.showSpinner = true;
+      setTimeout(() => {
+        this.countryService
+          .getCountryByName(countryName)
+          .subscribe((params) => {
+            this.countryInfo = params;
+            this.showSpinner = false;
+          });
+      }, 3000);
     });
   }
 }
+
+/* just import the spinner component to 
+the right module,then the spinner will appear*/

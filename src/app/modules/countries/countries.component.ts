@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 import { Country } from './Country';
 import { CountriesService } from './countries.service';
-import { debounceTime, switchMap } from 'rxjs/operators';
+import { debounceTime, switchMap, delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-countries',
@@ -12,9 +12,9 @@ import { debounceTime, switchMap } from 'rxjs/operators';
 })
 export class CountriesComponent implements OnInit {
   countries: Country[];
-  selectedCountries: Country[];
-  showWError: boolean;
-  errorMessage: string;
+  widgetCountries: Country[];
+  showError: boolean;
+  showSpinner: boolean = false;
 
   constructor(
     private countriesService: CountriesService,
@@ -22,9 +22,14 @@ export class CountriesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.countriesService.getCountries().subscribe((response) => {
-      this.countries = response;
-    });
+    this.showSpinner = true;
+    setTimeout(() => {
+      this.countriesService.getCountries().subscribe((response) => {
+        this.countries = response;
+        this.showSpinner = false;
+      });
+    }, 3000);
+
     this.searchForCountry();
   }
   searchForCountryByName = new FormControl();
@@ -36,7 +41,6 @@ export class CountriesComponent implements OnInit {
       .pipe(
         debounceTime(500),
         switchMap((id) => {
-          console.log(id);
           if (id == '') {
             return this.countriesService.getCountries();
           } else {
@@ -46,42 +50,45 @@ export class CountriesComponent implements OnInit {
       )
       .subscribe((response) => {
         if (response === null) {
-          this.showWError = true;
+          this.widgetCountries = null;
         } else {
-          this.selectedCountries = response;
-          this.countries = response;
-          this.showWError=false;
+          this.widgetCountries = response;
         }
-        console.log(this.showWError);
       });
-
-    /* the issue is when it goes to the error in subscribe it never goes to the 
-      function again
-    */
-    /* if (name == '') {
-      this.countriesService.getCountries().subscribe((response) => {
-        this.countries = response;
-        console.log(name);
-      });
-    } else {
-      this.countriesService
-        .getCountryByName(name)
-        .pipe(debounceTime(2000))
-        .subscribe(
-          (response) => {
-            this.countries = response;
-          },
-          (error) => {
-            this.showWidget = true;
-            this.errorMessage = error;
+    this.searchForCountryByName.valueChanges
+      .pipe(
+        debounceTime(500),
+        switchMap((id) => {
+          console.log(id);
+          this.showSpinner = true;
+          if (id == '') {
+            return this.countriesService.getCountries();
+          } else {
+            return this.countriesService.getCountryByName(id);
           }
-        );
-    }*/
+        }),
+        delay(3000)
+      )
+      .subscribe((response) => {
+        if (response === null) {
+          this.showError = true;
+          this.showSpinner = false;
+        } else {
+          this.countries = response;
+          this.showError = false;
+          this.showSpinner = false;
+        }
+      });
   }
 
   selectRegion(region: any): void {
-    this.countriesService.getCountryByRegion(region).subscribe((response) => {
-      this.countries = response;
-    });
+    this.showSpinner = true;
+    this.countriesService
+      .getCountryByRegion(region)
+      .pipe(delay(3000))
+      .subscribe((response) => {
+        this.countries = response;
+        this.showSpinner = false;
+      });
   }
 }

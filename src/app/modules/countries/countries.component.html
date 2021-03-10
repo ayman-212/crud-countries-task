@@ -13,8 +13,8 @@
         formControlName="searchForCountryByName"
       />
 
-      <div *ngIf="search.value && !showWError" class="widget">
-        <p *ngFor="let country of selectedCountries">{{ country.name }}</p>
+      <div *ngIf="search.value && !showError" class="widget">
+        <p *ngFor="let country of widgetCountries">{{ country.name }}</p>
       </div>
     </div>
 
@@ -29,11 +29,12 @@
       </mat-select>
     </mat-form-field>
   </form>
-  <div class="error-message" *ngIf="showWError; else countriesCard">
+  <app-spinner *ngIf="showSpinner"></app-spinner>
+  <div class="error-message" *ngIf="showError; else countriesCard">
     <p>Something bad happened, please try Search For a Valid Country.</p>
   </div>
   <ng-template #countriesCard>
-    <ul class="countries-container">
+    <ul class="countries-container" *ngIf="!showSpinner">
       <app-country
         *ngFor="let country of countries"
         [countryDetails]="country"
