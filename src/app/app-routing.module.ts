@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CountriesComponent } from './modules/countries/countries.component';
+import { CountriesComponent } from './modules/countries/pages/index/countries.component';
 
-import { InfoComponent } from './Components/info/info.component';
+import { InfoComponent } from './modules/countries/components/info/info.component';
 import { SignInComponent } from './Components/sign-in/sign-in.component';
 
 const routes: Routes = [

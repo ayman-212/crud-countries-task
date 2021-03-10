@@ -9,14 +9,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { CountriesModule } from './modules/countries/countries.module';
 
 import { AppComponent } from './app.component';
-import { InfoComponent } from './Components/info/info.component';
 import { SignInComponent } from './Components/sign-in/sign-in.component';
 import { HeaderComponent } from './Components/header/header.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    InfoComponent,
     SignInComponent,
     HeaderComponent,
     
@@ -26,9 +25,7 @@ import { HeaderComponent } from './Components/header/header.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
+    SharedModule,
     CountriesModule,
   ],
   providers: [],

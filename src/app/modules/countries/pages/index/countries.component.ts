@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
-import { Country } from './Country';
-import { CountriesService } from './countries.service';
-import { debounceTime, switchMap, delay } from 'rxjs/operators';
+import { Country } from '../../model/countries.model';
+import { CountriesService } from '../../model/countries.service';
+import { debounceTime, switchMap, delay, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-countries',
@@ -36,10 +36,17 @@ export class CountriesComponent implements OnInit {
   searchForm: FormGroup = this.fb.group({
     searchForCountryByName: this.searchForCountryByName,
   });
+
+
+
   searchForCountry() {
     this.searchForCountryByName.valueChanges
       .pipe(
-        debounceTime(500),
+        debounceTime(1000),
+        tap(() => {
+          this.showSpinner = true;
+        }),
+        delay(3000),
         switchMap((id) => {
           if (id == '') {
             return this.countriesService.getCountries();
@@ -49,36 +56,18 @@ export class CountriesComponent implements OnInit {
         })
       )
       .subscribe((response) => {
+        this.showSpinner = false;
         if (response === null) {
           this.widgetCountries = null;
-        } else {
-          this.widgetCountries = response;
-        }
-      });
-    this.searchForCountryByName.valueChanges
-      .pipe(
-        debounceTime(500),
-        switchMap((id) => {
-          console.log(id);
-          this.showSpinner = true;
-          if (id == '') {
-            return this.countriesService.getCountries();
-          } else {
-            return this.countriesService.getCountryByName(id);
-          }
-        }),
-        delay(3000)
-      )
-      .subscribe((response) => {
-        if (response === null) {
           this.showError = true;
-          this.showSpinner = false;
         } else {
           this.countries = response;
+          this.widgetCountries = response;
           this.showError = false;
-          this.showSpinner = false;
         }
       });
+
+
   }
 
   selectRegion(region: any): void {

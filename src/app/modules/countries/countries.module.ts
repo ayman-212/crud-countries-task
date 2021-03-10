@@ -5,20 +5,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
 import { AppRoutingModule } from '../../app-routing.module';
 
-import { CountriesComponent } from './countries.component';
-import { CountryComponent } from '../../Components/country/country.component';
-import { SpinnerComponent } from '../../Components/spinner/spinner.component';
+import { CountryComponent } from './components/country/country.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { InfoComponent } from './components/info/info.component';
+import { CountriesComponent } from './pages/index/countries.component';
 
 @NgModule({
-  declarations: [CountriesComponent, CountryComponent, SpinnerComponent],
+  declarations: [CountriesComponent, CountryComponent, InfoComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule,
     AppRoutingModule,
+    SharedModule
   ],
-  
- 
 })
 export class CountriesModule {}

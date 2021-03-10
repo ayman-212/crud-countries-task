@@ -4,6 +4,8 @@
     (submit)="$event.preventDefault()"
     [formGroup]="searchForm"
   >
+
+    <!--/ Create self-contained component for this element and to be sharable cross over all the featured modules -->
     <div class="widget-container">
       <input
         type="text"
@@ -29,10 +31,17 @@
       </mat-select>
     </mat-form-field>
   </form>
+
+
   <app-spinner *ngIf="showSpinner"></app-spinner>
+  
+  
+  <!--  -->
   <div class="error-message" *ngIf="showError; else countriesCard">
     <p>Something bad happened, please try Search For a Valid Country.</p>
   </div>
+
+
   <ng-template #countriesCard>
     <ul class="countries-container" *ngIf="!showSpinner">
       <app-country

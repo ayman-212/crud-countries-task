@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { Country } from './Country';
+import { Country } from './countries.model';
 
 @Injectable({
   providedIn: 'root',
