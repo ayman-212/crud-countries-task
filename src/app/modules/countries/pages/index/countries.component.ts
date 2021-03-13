@@ -12,9 +12,10 @@ import { debounceTime, switchMap, delay, tap } from 'rxjs/operators';
 })
 export class CountriesComponent implements OnInit {
   countries: Country[];
-  widgetCountries: Country[];
-  showError: boolean;
+  showCountryError: boolean;
+  showRegionError: boolean;
   showSpinner: boolean = false;
+  errorMessage: string;
 
   constructor(
     private countriesService: CountriesService,
@@ -23,12 +24,14 @@ export class CountriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.showSpinner = true;
-    setTimeout(() => {
-      this.countriesService.getCountries().subscribe((response) => {
+
+    this.countriesService
+      .getCountries()
+      .pipe(delay(700))
+      .subscribe((response) => {
         this.countries = response;
         this.showSpinner = false;
       });
-    }, 3000);
 
     this.searchForCountry();
   }
@@ -37,47 +40,49 @@ export class CountriesComponent implements OnInit {
     searchForCountryByName: this.searchForCountryByName,
   });
 
-
-
   searchForCountry() {
     this.searchForCountryByName.valueChanges
       .pipe(
         debounceTime(1000),
         tap(() => {
           this.showSpinner = true;
+          this.showCountryError = false;
         }),
-        delay(3000),
+        delay(500),
         switchMap((id) => {
           if (id == '') {
             return this.countriesService.getCountries();
           } else {
-            return this.countriesService.getCountryByName(id);
+            const updatedId = id.trim().replace(/  +/g, ' ');
+            return this.countriesService.getCountryByName(updatedId);
           }
         })
       )
       .subscribe((response) => {
         this.showSpinner = false;
         if (response === null) {
-          this.widgetCountries = null;
-          this.showError = true;
+          this.showCountryError = true;
         } else {
           this.countries = response;
-          this.widgetCountries = response;
-          this.showError = false;
+          this.showCountryError = false;
         }
       });
-
-
   }
 
   selectRegion(region: any): void {
     this.showSpinner = true;
+    this.showRegionError = false;
     this.countriesService
       .getCountryByRegion(region)
-      .pipe(delay(3000))
+      .pipe(delay(500))
       .subscribe((response) => {
-        this.countries = response;
         this.showSpinner = false;
+        if (response === null) {
+          this.showRegionError = true;
+        } else {
+          this.countries = response;
+          this.showRegionError = false;
+        }
       });
   }
 }

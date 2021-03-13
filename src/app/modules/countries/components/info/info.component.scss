@@ -1,35 +1,29 @@
 .box {
   width: 100%;
-  background-color: hsl(0, 0%, 98%);
+  background-color: hsl(0, 0%, 100%);
   padding: 2% 0;
   min-height: 89vh;
-  button {
-    margin: 0 0 20px 55px;
-    padding: 5px 0;
-    width: 130px;
-    border: none;
-    outline: none;
-    background-color: white;
-    box-shadow: 0px 3px lightgray;
-    cursor: pointer;
-  }
-  a {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    i {
-      margin-right: 15px;
-    }
-  }
 }
 
+button {
+  position: absolute;
+  top: 15%;
+  left: 5%;
+  padding: 5px 0;
+  width: 130px;
+  border: none;
+  outline: none;
+  background-color: white;
+  box-shadow: 0px 3px lightgray;
+  cursor: pointer;
+  i {
+    margin-right: 15px;
+  }
+}
 .country-info-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: white;
   padding: 5%;
   .country-flag {
     height: 300px;
@@ -61,7 +55,7 @@
 
   .country-details {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     font-size: 14px;
     margin-bottom: 15px;

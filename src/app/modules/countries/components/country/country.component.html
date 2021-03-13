@@ -1,23 +1,19 @@
-<li class="country-details">
-  <a [routerLink]="['/countries', countryDetails.name]">
-    <div>
-      <div
-        class="flag"
-        [ngStyle]="{ 'background-image': 'url(' + countryDetails.flag + ')' }"
-      ></div>
-      <h2>{{ countryDetails.name }}</h2>
-      <div class="details">
-        <p>Population:</p>
-        <span>{{ countryDetails.population | number }}</span>
-      </div>
-      <div class="details">
-        <p>Region:</p>
-        <span>{{ countryDetails.region }}</span>
-      </div>
-      <div class="details">
-        <p>Capital:</p>
-        <span>{{ countryDetails.capital }}</span>
-      </div>
-    </div>
-  </a>
+<li [routerLink]="['/countries', countryDetails.name]">
+  <div
+    class="flag"
+    [ngStyle]="{ 'background-image': 'url(' + countryDetails.flag + ')' }"
+  ></div>
+  <h2>{{ countryDetails.name }}</h2>
+  <app-details
+    detailsName="Population"
+    [detailsValue]="countryDetails.population | number"
+  ></app-details>
+  <app-details
+    detailsName="Region"
+    [detailsValue]="countryDetails.region"
+  ></app-details>
+  <app-details
+    detailsName="Capital"
+    [detailsValue]="countryDetails.capital"
+  ></app-details>
 </li>

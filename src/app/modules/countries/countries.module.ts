@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MaterialModule } from '../../material.module';
 import { AppRoutingModule } from '../../app-routing.module';
 
 import { CountryComponent } from './components/country/country.component';
@@ -17,7 +16,7 @@ import { CountriesComponent } from './pages/index/countries.component';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
   ],
 })
 export class CountriesModule {}

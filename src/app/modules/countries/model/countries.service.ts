@@ -11,7 +11,7 @@ import { Country } from './countries.model';
 export class CountriesService {
   countriesUrl: string = 'https://restcountries.eu/rest/v2';
   constructor(private http: HttpClient) {}
-  private handleError(errorResponse: HttpErrorResponse) {
+  /*private handleError(errorResponse: HttpErrorResponse) {
     if (errorResponse.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', errorResponse.error.message);
@@ -27,18 +27,21 @@ export class CountriesService {
     return throwError(
       'Something bad happened; please try Search For a real country.'
     );
-  }
+  }*/
 
   getCountries(): Observable<Country[]> {
     return this.http.get<Country[]>(`${this.countriesUrl}/all`);
   }
 
-  getCountryByName(
-    countryName: string,
-  ): Observable<Country[]> {
+  getCountryByName(countryName: string): Observable<Country[]> {
     return this.http
       .get<Country[]>(`${this.countriesUrl}/name/${countryName}`)
       .pipe(
+        /*catchError((err) => {
+          console.log(err);
+          return throwError(err);
+        }), /*what to do if i want to extract some error message
+        from the request*/
         catchError((err) => {
           return of(null);
         })
@@ -46,8 +49,12 @@ export class CountriesService {
   }
 
   getCountryByRegion(regionName: string): Observable<Country[]> {
-    return this.http.get<Country[]>(
-      `${this.countriesUrl}/region/${regionName}`
-    );
+    return this.http
+      .get<Country[]>(`${this.countriesUrl}/region/${regionName}`)
+      .pipe(
+        catchError((err) => {
+          return of(null);
+        })
+      );
   }
 }

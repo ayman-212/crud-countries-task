@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { delay } from 'rxjs/operators';
 import { Country } from '../../model/countries.model';
 import { CountriesService } from '../../model/countries.service';
 
@@ -11,6 +12,8 @@ import { CountriesService } from '../../model/countries.service';
 export class InfoComponent implements OnInit {
   countryInfo: Country[];
   showSpinner: boolean;
+  searchParams: string;
+  showError: boolean;
   constructor(
     private route: ActivatedRoute,
     private countryService: CountriesService
@@ -18,17 +21,23 @@ export class InfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((response) => {
-      let countryName = response.get('countryName');
-      this.showSpinner = true;
-      setTimeout(() => {
-        this.countryService
-          .getCountryByName(countryName)
-          .subscribe((params) => {
-            this.countryInfo = params;
-            this.showSpinner = false;
-          });
-      }, 3000);
+      this.searchParams = response.get('countryName');
     });
+    this.showSpinner = true;
+    this.showError = false;
+    this.countryService
+      .getCountryByName(this.searchParams)
+      .pipe(delay(500))
+      .subscribe((response) => {
+        this.showSpinner = false;
+        if (response === null) {
+          this.showError = true;
+          console.log(this.showError);
+        } else {
+          this.countryInfo = response;
+          this.showError = false;
+        }
+      });
   }
 }
 
