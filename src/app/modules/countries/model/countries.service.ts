@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, count } from 'rxjs/operators';
 
 import { Country } from './countries.model';
 
@@ -34,6 +34,7 @@ export class CountriesService {
   }
 
   getCountryByName(countryName: string): Observable<Country[]> {
+    countryName = countryName.trim().replace(/  +/g, ' ');
     return this.http
       .get<Country[]>(`${this.countriesUrl}/name/${countryName}`)
       .pipe(

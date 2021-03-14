@@ -53,8 +53,7 @@ export class CountriesComponent implements OnInit {
           if (id == '') {
             return this.countriesService.getCountries();
           } else {
-            const updatedId = id.trim().replace(/  +/g, ' ');
-            return this.countriesService.getCountryByName(updatedId);
+            return this.countriesService.getCountryByName(id);
           }
         })
       )
