@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Country } from '../../model/countries.model';
 import { CountriesService } from '../../model/countries.service';
 import { debounceTime, switchMap, delay, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-countries',
@@ -19,7 +21,8 @@ export class CountriesComponent implements OnInit {
 
   constructor(
     private countriesService: CountriesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +38,11 @@ export class CountriesComponent implements OnInit {
 
     this.searchForCountry();
   }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, { duration: 2500 });
+  }
+
   searchForCountryByName = new FormControl();
   searchForm: FormGroup = this.fb.group({
     searchForCountryByName: this.searchForCountryByName,
@@ -44,16 +52,25 @@ export class CountriesComponent implements OnInit {
     this.searchForCountryByName.valueChanges
       .pipe(
         debounceTime(1000),
-        tap(() => {
-          this.showSpinner = true;
+        tap((id) => {
           this.showCountryError = false;
+          const inputValidationPattern = /^[a-zA-Z\s\""]*$/g;
+          if (!inputValidationPattern.test(id)) {
+            this.openSnackBar('Invalid Input', 'Got It');
+          } else {
+            this.showSpinner = true;
+          }
         }),
         delay(500),
         switchMap((id) => {
-          if (id == '') {
-            return this.countriesService.getCountries();
-          } else {
-            return this.countriesService.getCountryByName(id);
+          const inputValidationPattern = /^[a-zA-Z\s\""]*$/g;
+          console.log(inputValidationPattern.test(id));
+          if (inputValidationPattern.test(id)) {
+            if (id == '') {
+              return this.countriesService.getCountries();
+            } else {
+              return this.countriesService.getCountryByName(id);
+            }
           }
         })
       )
