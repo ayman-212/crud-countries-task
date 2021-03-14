@@ -1,9 +1,9 @@
-.error-message {
+.error-message-wrapper {
   height: 69vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  p {
+  .error-message {
     font-size: 18px;
     color: indianred;
   }

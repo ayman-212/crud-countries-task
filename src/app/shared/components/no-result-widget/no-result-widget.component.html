@@ -1,3 +1,9 @@
-<div class="error-message">
-  <p>Something bad happened,  {{[errorMessage]}}</p>
+<div class="error-message-wrapper">
+  <p class="error-message"> 
+    <ng-container *ngIf="errorMessage">Something bad happened,  {{errorMessage}}</ng-container>
+    <ng-content>
+      <!-- Open space to add custom content inside element tag -->
+    </ng-content>
+  </p>
+ 
 </div>
