@@ -63,13 +63,10 @@ export class CountriesComponent implements OnInit {
         }),
         delay(500),
         switchMap((id) => {
+          if (!id.trim().length) return this.countriesService.getCountries();
           const inputValidationPattern = /^[a-zA-Z\s\""]*$/g;
-
-          if (id == '') {
-            return this.countriesService.getCountries();
-          } else {
-            return this.countriesService.getCountryByName(id);
-          }
+          if (inputValidationPattern.test(id)) return this.countriesService.getCountryByName(id);
+          
         })
       )
       .subscribe((response) => {
