@@ -64,13 +64,11 @@ export class CountriesComponent implements OnInit {
         delay(500),
         switchMap((id) => {
           const inputValidationPattern = /^[a-zA-Z\s\""]*$/g;
-          console.log(inputValidationPattern.test(id));
-          if (inputValidationPattern.test(id)) {
-            if (id == '') {
-              return this.countriesService.getCountries();
-            } else {
-              return this.countriesService.getCountryByName(id);
-            }
+
+          if (id == '') {
+            return this.countriesService.getCountries();
+          } else {
+            return this.countriesService.getCountryByName(id);
           }
         })
       )
