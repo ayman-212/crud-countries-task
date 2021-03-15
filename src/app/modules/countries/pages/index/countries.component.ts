@@ -5,7 +5,9 @@ import { Country } from '../../model/countries.model';
 import { CountriesService } from '../../model/countries.service';
 import { debounceTime, switchMap, delay, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { stringify } from '@angular/compiler/src/util';
+
+import {utilityFunction} from '../../model/utility'
+import { SnackBarCheckComponent } from '../../components/snack-bar-check/snack-bar-check.component';
 
 @Component({
   selector: 'app-countries',
@@ -39,8 +41,10 @@ export class CountriesComponent implements OnInit {
     this.searchForCountry();
   }
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, { duration: 2500 });
+  openSnackBar() {
+    this.snackBar.openFromComponent(SnackBarCheckComponent, {
+      duration: 1500,
+    });
   }
 
   searchForCountryByName = new FormControl();
@@ -56,7 +60,7 @@ export class CountriesComponent implements OnInit {
           this.showCountryError = false;
           const inputValidationPattern = /^[a-zA-Z\s\""]*$/g;
           if (!inputValidationPattern.test(id)) {
-            this.openSnackBar('Invalid Input', 'Got It');
+            this.openSnackBar();
           } else {
             this.showSpinner = true;
           }
@@ -65,8 +69,8 @@ export class CountriesComponent implements OnInit {
         switchMap((id) => {
           if (!id.trim().length) return this.countriesService.getCountries();
           const inputValidationPattern = /^[a-zA-Z\s\""]*$/g;
-          if (inputValidationPattern.test(id)) return this.countriesService.getCountryByName(id);
-          
+          if (inputValidationPattern.test(id))
+            return this.countriesService.getCountryByName(id);
         })
       )
       .subscribe((response) => {
@@ -80,7 +84,10 @@ export class CountriesComponent implements OnInit {
       });
   }
 
-  selectRegion(region: any): void {
+  selectRegion(region: any) {
+    // utilityFunction.call(this, this.countriesService.getCountryByRegion(region),
+    // this.showSpinner,
+    // this.showRegionError)
     this.showSpinner = true;
     this.showRegionError = false;
     this.countriesService
@@ -95,5 +102,6 @@ export class CountriesComponent implements OnInit {
           this.showRegionError = false;
         }
       });
+
   }
 }

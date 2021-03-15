@@ -1,23 +1,23 @@
 import { delay } from 'rxjs/operators';
 import { Country } from './countries.model';
 
-export const utilityFunction = (
+export const utilityFunction = function(
   request: any,
   error: boolean,
   spinner: boolean,
-  data: Country[]
-) => {
+) {
   error = false;
   spinner = true;
-  console.log(error);
-  request.pipe(delay(500)).subscribe((response: Country[]) => {
+  debugger;
+  request.pipe(delay(500)).tap((response: Country[]) => {
     spinner = false;
+    console.log('Hello world');
     if (response === null) {
       error = true;
       console.log(error);
     } else {
       error = false;
-      data = response;
+      this.countries = response;
     }
   });
 };

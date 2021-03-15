@@ -44,18 +44,16 @@
             detailsName="Top Level Domain:"
             [detailsValue]="country.topLevelDomain"
           ></app-details>
-          <div class="country-details">
-            <p>Currencies:</p>
+          <app-details detailsName="Currencies:">
             <span *ngFor="let currency of country.currencies">{{
               currency.name
             }}</span>
-          </div>
-          <div class="country-details">
-            <p>Languages:</p>
+          </app-details>
+          <app-details detailsName="Languages">
             <span *ngFor="let language of country.languages">{{
               language.name
             }}</span>
-          </div>
+          </app-details>
         </div>
       </div>
     </div>

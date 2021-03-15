@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CountriesComponent } from './modules/countries/pages/index/countries.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
-import { InfoComponent } from './modules/countries/components/info/info.component';
 import { SignInComponent } from './Components/sign-in/sign-in.component';
 
 const routes: Routes = [
@@ -11,13 +10,14 @@ const routes: Routes = [
     component: SignInComponent,
   },
   {
-    path: 'countries/:countryName',
-    component: InfoComponent,
-  },
-  {
     path: 'countries',
-    component: CountriesComponent,
+    loadChildren: () =>
+      import('./modules/countries/countries.module').then(
+        (m) => m.CountriesModule
+      ),
   },
+  { path: '**', 
+  component: PageNotFoundComponent },
 ];
 
 @NgModule({

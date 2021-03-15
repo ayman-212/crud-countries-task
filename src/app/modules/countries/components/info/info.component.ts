@@ -40,6 +40,3 @@ export class InfoComponent implements OnInit {
       });
   }
 }
-
-/* just import the spinner component to 
-the right module,then the spinner will appear*/

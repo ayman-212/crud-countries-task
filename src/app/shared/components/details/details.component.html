@@ -1,6 +1,7 @@
 <div class="details" >
   <p>{{ detailsName }}</p>
-  <span>{{ detailsValue }}</span>
+  <span *ngIf="detailsValue">{{ detailsValue }}</span>
+  <ng-content></ng-content>
 </div>
 
 
