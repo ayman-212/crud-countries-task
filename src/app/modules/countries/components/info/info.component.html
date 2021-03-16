@@ -4,7 +4,7 @@
   errorMessage="Please try again later"
 ></app-no-result-widget>
 
-<button routerLink="/countries" *ngIf="!showSpinner">
+<button (click)='navigateToCountries()' *ngIf="!showSpinner">
   <i class="fa fa-long-arrow-left" style="font-size: 24px"></i>
   <span>Back</span>
 </button>

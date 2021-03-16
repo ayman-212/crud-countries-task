@@ -4,6 +4,8 @@ import { delay } from 'rxjs/operators';
 import { Country } from '../../model/countries.model';
 import { CountriesService } from '../../model/countries.service';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-info',
   templateUrl: './info.component.html',
@@ -16,7 +18,8 @@ export class InfoComponent implements OnInit {
   showError: boolean;
   constructor(
     private route: ActivatedRoute,
-    private countryService: CountriesService
+    private countryService: CountriesService,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -38,5 +41,9 @@ export class InfoComponent implements OnInit {
           this.showError = false;
         }
       });
+  }
+
+  navigateToCountries(): void {
+    this.router.navigateByUrl('auth/countries');
   }
 }

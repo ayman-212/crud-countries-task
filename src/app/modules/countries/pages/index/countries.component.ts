@@ -3,11 +3,12 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 import { Country } from '../../model/countries.model';
 import { CountriesService } from '../../model/countries.service';
-import { debounceTime, switchMap, delay, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, delay, tap, catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import {utilityFunction} from '../../model/utility'
 import { SnackBarCheckComponent } from '../../components/snack-bar-check/snack-bar-check.component';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-countries',
@@ -58,20 +59,19 @@ export class CountriesComponent implements OnInit {
         debounceTime(1000),
         tap((id) => {
           this.showCountryError = false;
-          const inputValidationPattern = /^[a-zA-Z\s\""]*$/g;
-          if (!inputValidationPattern.test(id)) {
-            this.openSnackBar();
-          } else {
-            this.showSpinner = true;
-          }
+          this.showSpinner = true;
         }),
         delay(500),
         switchMap((id) => {
-          if (!id.trim().length) return this.countriesService.getCountries();
           const inputValidationPattern = /^[a-zA-Z\s\""]*$/g;
-          if (inputValidationPattern.test(id))
-            return this.countriesService.getCountryByName(id);
-        })
+          // If spaces only
+          if (!id.trim().length) return this.countriesService.getCountries();
+          // If valid input
+          else if (inputValidationPattern.test(id)) return this.countriesService.getCountryByName(id);
+          // If its not valid
+          this.openSnackBar();
+          return of([])
+        }),
       )
       .subscribe((response) => {
         this.showSpinner = false;
