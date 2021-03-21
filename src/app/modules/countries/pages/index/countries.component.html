@@ -26,25 +26,25 @@
     </mat-form-field>
   </form>
 
-  <app-spinner *ngIf="showSpinner"></app-spinner>
+  <app-spinner *ngIf="spinner$"></app-spinner>
 
-  <app-no-result-widget
+  <!--<app-no-result-widget
     errorMessage="Please try, Search For a Valid Country Name"
     *ngIf="showCountryError"
   >
-  </app-no-result-widget>
+  </app-no-result-widget>-->
   <app-no-result-widget
-    errorMessage="Please try, No Valid Region"
-    *ngIf="showRegionError"
+    errorMessage="Please try, A Valid Region"
+    *ngIf="regionError$"
   >
   </app-no-result-widget>
 
   <ul
     class="countries-container"
-    *ngIf="!showSpinner && !showCountryError && !showRegionError"
+    *ngIf="!spinner$ && !regionError$  "
   >
     <app-country
-      *ngFor="let country of countries"
+      *ngFor="let country of countries$"
       [countryDetails]="country"
     ></app-country>
   </ul>
