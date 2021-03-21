@@ -9,7 +9,6 @@ import { delay, map, mergeMap, tap } from 'rxjs/operators';
 
 export interface CountriesStateModel {
   countries: Country[];
-  spinner: boolean;
   regionError: boolean;
   countryError: boolean;
 }
@@ -18,7 +17,6 @@ export interface CountriesStateModel {
   name: 'countries',
   defaults: {
     countries: [],
-    spinner: false,
     regionError: false,
     countryError: false,
   },
@@ -33,11 +31,6 @@ export class CountriesState {
   }
 
   @Selector()
-  static spinner(state: CountriesStateModel): boolean {
-    return state.spinner;
-  }
-
-  @Selector()
   static regionError(state: CountriesStateModel): boolean {
     return state.regionError;
   }
@@ -47,69 +40,65 @@ export class CountriesState {
     return state.countryError;
   }
 
-  @Action(countriesActions.GetAllCountriesStart)
-  getAllCountriesStart({ patchState }: StateContext<CountriesStateModel>) {
+  @Action(countriesActions.FetchCountriesStart)
+  start({ patchState }: StateContext<CountriesStateModel>) {
     patchState({
-      spinner: true,
+      regionError: false,
+      countryError: false,
     });
   }
 
   @Action(countriesActions.GetAllCountries)
-  getAllCountries({ patchState }: StateContext<CountriesStateModel>) {
+  getAllCountries({ patchState, dispatch }: StateContext<CountriesStateModel>) {
+    dispatch(new countriesActions.FetchCountriesStart());
     return this.countriesService.getCountries().pipe(
-      delay(1500),
       tap((countries: Country[]) => {
         patchState({
-          spinner: false,
           countries: countries,
         });
       })
     );
   }
 
-  @Action(countriesActions.GetCountriesByRegionStart)
-  start({ patchState }: StateContext<CountriesStateModel>) {
-    patchState({
-      spinner: true,
-      regionError: false,
-    });
-  }
-
   @Action(countriesActions.GetCountriesByRegion)
   getCountriesByRegion(
-    { patchState,dispatch }: StateContext<CountriesStateModel>,
+    { patchState, dispatch }: StateContext<CountriesStateModel>,
     { region }: countriesActions.GetCountriesByRegion
   ) {
-      dispatch(new countriesActions.GetCountriesByRegionStart())
+    dispatch(new countriesActions.FetchCountriesStart());
     return this.countriesService.getCountryByRegion(region).pipe(
-      // mergeMap(() => dispatch(new countriesActions.GetCountriesByRegionStart())),
-      delay(2000),
       tap((countries: Country[]) => {
         if (countries === null) {
-          patchState({ spinner: false, regionError: true });
+          patchState({ regionError: true });
         } else {
           patchState({
             countries: countries,
-            spinner: false,
             regionError: false,
           });
         }
       })
     );
   }
-}
 
-// this.showSpinner = true;
-// this.showRegionError = false;
-// this.countriesService
-//   .getCountryByRegion(region)
-//   .pipe(delay(500))
-//   .subscribe((response) => {
-//     this.showSpinner = false;
-//     if (response === null) {
-//       this.showRegionError = true;
-//     } else {
-//       this.countries = response;
-//       this.showRegionError = false;
-//     }
-//   });
+  @Action(countriesActions.GetCountryByName)
+  getCountryByName(
+    { patchState, dispatch }: StateContext<CountriesStateModel>,
+    { country }: countriesActions.GetCountryByName
+  ) {
+    dispatch(new countriesActions.FetchCountriesStart());
+    return this.countriesService.getCountryByName(country).pipe(
+      tap((countryResult) => {
+        if (countryResult === null) {
+          patchState({
+            countryError: true,
+          });
+        } else {
+          patchState({
+            countries: countryResult,
+            countryError: false,
+          });
+        }
+      })
+    );
+  }
+}

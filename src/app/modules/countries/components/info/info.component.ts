@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { delay } from 'rxjs/operators';
+
 import { Country } from '../../model/countries.model';
-import { CountriesService } from '../../model/countries.service';
 
 import { Router } from '@angular/router';
+import { Select, Store } from '@ngxs/store';
+import { CountriesState } from '../../state/countries.state';
+import { Observable } from 'rxjs';
+import { SpinnerState } from 'src/app/core/modules/spinner/state/spinner.state';
+import { GetCountryByName } from '../../state/countries.actions';
 
 @Component({
   selector: 'app-info',
@@ -12,35 +16,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./info.component.scss'],
 })
 export class InfoComponent implements OnInit {
-  countryInfo: Country[];
-  showSpinner: boolean;
   searchParams: string;
-  showError: boolean;
+
+  @Select(CountriesState.countries) countryInfo$: Observable<Country[]>;
+  @Select(CountriesState.countryError) countryError$: Observable<boolean>;
+  @Select(SpinnerState.enabled) spinner$: Observable<boolean>;
+
   constructor(
     private route: ActivatedRoute,
-    private countryService: CountriesService,
-    public router: Router
+    public router: Router,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((response) => {
       this.searchParams = response.get('countryName');
     });
-    this.showSpinner = true;
-    this.showError = false;
-    this.countryService
-      .getCountryByName(this.searchParams)
-      .pipe(delay(500))
-      .subscribe((response) => {
-        this.showSpinner = false;
-        if (response === null) {
-          this.showError = true;
-          console.log(this.showError);
-        } else {
-          this.countryInfo = response;
-          this.showError = false;
-        }
-      });
+
+    this.store.dispatch(new GetCountryByName(this.searchParams));
   }
 
   navigateToCountries(): void {

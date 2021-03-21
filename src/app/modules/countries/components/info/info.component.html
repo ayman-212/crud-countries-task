@@ -1,14 +1,13 @@
-<app-spinner *ngIf="showSpinner"></app-spinner>
 <app-no-result-widget
-  *ngIf="showError"
+  *ngIf="countryError$ | async"
   errorMessage="Please try again later"
 ></app-no-result-widget>
 
-<button (click)='navigateToCountries()' *ngIf="!showSpinner">
+<button (click)="navigateToCountries()" *ngIf="!(spinner$ | async)">
   <i class="fa fa-long-arrow-left" style="font-size: 24px"></i>
   <span>Back</span>
 </button>
-<div *ngFor="let country of countryInfo" class="box">
+<div *ngFor="let country of countryInfo$ | async" class="box">
   <div class="country-info-container">
     <div
       class="country-flag"

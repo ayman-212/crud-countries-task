@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class CountryComponent implements OnInit {
   @Input() countryDetails: Country;
-  constructor(public router: Router) {}
+  constructor() {}
 
   ngOnInit(): void {}
 }
